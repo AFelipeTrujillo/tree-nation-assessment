@@ -1,0 +1,23 @@
+/vendor/
+.env
+var/*.sqlite
+.phpunit.cache/
+.phpunit.result.cache
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# Environment
+.env.local
+.env.*.local

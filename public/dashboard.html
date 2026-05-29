@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>X Visits = 1 Tree Dashboard</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="container">
+    <section class="header">
+      <div>
+        <h1>X Visits = 1 Tree</h1>
+        <p>Visits aggregated per hour.</p>
+      </div>
+      <button id="refresh-button" type="button">Refresh</button>
+    </section>
+
+    <section class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Hour</th>
+            <th>Visits</th>
+          </tr>
+        </thead>
+        <tbody id="visits-body">
+          <tr>
+            <td colspan="2">Loading...</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <p id="status" class="status"></p>
+  </main>
+
+  <script src="/dashboard.js"></script>
+</body>
+</html>
