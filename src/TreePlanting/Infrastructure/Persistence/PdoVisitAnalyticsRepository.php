@@ -16,7 +16,7 @@ final readonly class PdoVisitAnalyticsRepository implements VisitAnalyticsReposi
     public function visitsPerHour(): array
     {
         $statement = $this->pdo->query(
-            "SELECT strftime('%Y-%m-%dT%H:00:00Z', occurred_at) AS hour,
+            "SELECT strftime('%H:00', occurred_at) AS hour,
                     COUNT(*) AS visits
              FROM visits
              GROUP BY hour

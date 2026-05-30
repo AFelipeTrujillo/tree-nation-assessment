@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tree Nation API</title>
+</head>
+<body>
+    <h1>Tree Nation API</h1>
+
+    <p>Available endpoints:</p>
+
+    <ul>
+        <li><a href="/api/health">GET /api/health</a></li>
+        <li><a href="/api/customers/cus_002/stats">GET /api/customers/{customerId}/stats (example with cus_002 id)</a></li>
+        <li><a href="/api/analytics/visits-per-hour">GET /api/analytics/visits-per-hour</a></li>
+        <li><a href="/dashboard.html">GET /dashboard.html</a></li>
+    </ul>
+    <ul>
+        <li>
+            <a href="/api/visits">POST /api/visits</a>
+            <pre>
+                curl -X POST http://localhost:8080/api/visits \
+                -H "Content-Type: application/json" \
+                -d '{
+                    "eventId": "device-event-abc-123",
+                    "customerId": "cus_123",
+                    "shopId": "shop_001",
+                    "occurredAt": "2026-05-29T10:15:00Z"
+                }'
+            </pre>
+        </li>
+    </ul>
+</body>
+</html>

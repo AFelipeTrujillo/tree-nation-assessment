@@ -22,6 +22,8 @@ use DI\ContainerBuilder;
 use Dotenv\Dotenv;
 use Psr\Container\ContainerInterface;
 use Slim\Factory\AppFactory;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -33,10 +35,20 @@ if (file_exists($root . '/.env')) {
 
 $containerBuilder = new ContainerBuilder();
 
+/**
+ * Entry point for the Tree Nation Assessment application.
+ * 
+ * This script is responsible for initializing the application
+ * and handling incoming HTTP requests. It is located in the 
+ * public directory and serves as the main access point for 
+ * the application.
+ * 
+ */
+// 
 $containerBuilder->addDefinitions([
     PDO::class => static function (): PDO {
         $root = dirname(__DIR__);
-        $databasePath = $_ENV['DATABASE_PATH'] ?? 'database/app.sqlite';
+        $databasePath = $_ENV['DATABASE_PATH'] ?? 'var/app.sqlite';
         $absoluteDatabasePath = str_starts_with($databasePath, '/')
             ? $databasePath
             : $root . '/' . $databasePath;
@@ -86,6 +98,12 @@ $errorMiddleware = $app->addErrorMiddleware(
     logErrors: true,
     logErrorDetails: true,
 );
+
+$app->get('/', function(Request $request, Response $response): Response {
+    $html = file_get_contents(__DIR__ . '/../templates/home.html');
+    $response->getBody()->write($html);
+    return $response->withHeader('Content-Type', 'text/html');
+});
 
 $app->get('/api/health', HealthAction::class);
 $app->post('/api/visits', RegisterVisitAction::class);

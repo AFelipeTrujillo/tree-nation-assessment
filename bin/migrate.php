@@ -33,4 +33,15 @@ $pdo = new PDO('sqlite:' . $absoluteDatabasePath);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $pdo->exec($schema);
 
+$seedPath = $root . '/database/seeds.sql';
+$seeds = file_get_contents($seedPath);
+
+if ($seeds === false) {
+    throw new RuntimeException('Could not read database/seeds.sql');
+}
+
+$pdo = new PDO('sqlite:' . $absoluteDatabasePath);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$pdo->exec($seeds);
+
 fwrite(STDOUT, "Database schema initialized at {$absoluteDatabasePath}\n");
