@@ -24,7 +24,7 @@ Instead, the implementation focuses on:
 * explicit use cases,
 * simple persistence,
 * a small HTTP API with **PHP/Slim**,
-* a minimal frontend with **ReactJS**,
+* a minimal frontend with **React**,
 * easy local execution.
 * a container defination for docker.
 
@@ -108,6 +108,41 @@ For this project, React is a good choice because the frontend needs to communica
 
 React is also lightweight and flexible enough to grow in the future. If the application becomes larger, new components, pages, forms, charts, or authentication flows can be added without changing the backend architecture.
 
+## Database
+
+This project uses a static SQL schema file instead of a full [migration](https://github.com/AFelipeTrujillo/tree-nation-assessment/blob/master/database/schema.sql) tool and [seeds](https://github.com/AFelipeTrujillo/tree-nation-assessment/blob/master/database/seeds.sql) file to provide sample data.
+
+```bash
+php bin/migrate.php
+```
+
+### Schema
+
+```sql
+CREATE TABLE IF NOT EXISTS visits (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    event_id TEXT UNIQUE,
+    customer_id TEXT NOT NULL,
+    shop_id TEXT NOT NULL,
+    occurred_at TEXT NOT NULL,
+    received_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_visits_customer_id
+ON visits (customer_id);
+
+CREATE INDEX IF NOT EXISTS idx_visits_occurred_at
+ON visits (occurred_at);
+
+CREATE TABLE IF NOT EXISTS customer_stats (
+    customer_id TEXT PRIMARY KEY,
+    total_visits INTEGER NOT NULL DEFAULT 0,
+    trees_planted INTEGER NOT NULL DEFAULT 0,
+    last_connection_at TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+```
 
 ## How to Run
 
@@ -128,6 +163,32 @@ VISITS_PER_TREE=5
 Go to:  
 ```
 http://localhost:8080
+```
+
+### Docker Entry Point ([Link](https://github.com/AFelipeTrujillo/tree-nation-assessment/blob/master/docker/entrypoint.sh))
+Install dependecies and run [migrations](https://github.com/AFelipeTrujillo/tree-nation-assessment/blob/master/bin/migrate.php).
+
+```bash
+#!/usr/bin/env sh
+
+set -e
+
+cd /app
+
+mkdir -p var
+
+if [ ! -f .env ]; then
+  cp .env.example .env
+fi
+
+composer install \
+  --no-interaction \
+  --prefer-dist \
+  --no-progress
+
+php bin/migrate.php
+
+exec php -S 0.0.0.0:8080 -t public
 ```
 
 ## Example API Usage
