@@ -116,7 +116,7 @@ This project uses a static SQL schema file instead of a full [migration](https:/
 php bin/migrate.php
 ```
 
-### Schema
+### Schema
 
 ```sql
 CREATE TABLE IF NOT EXISTS visits (
