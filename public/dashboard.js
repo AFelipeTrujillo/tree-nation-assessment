@@ -1,33 +1,57 @@
-const tbody = document.querySelector('#visits-body');
-const statusElement = document.querySelector('#status');
-const refreshButton = document.querySelector('#refresh-button');
+const { useEffect, useState } = React;
+  const h = React.createElement;
 
-async function loadVisitsPerHour() {
-  statusElement.textContent = 'Loading...';
+  function Dashboard() {
+    const [rows, setRows] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  try {
-    const response = await fetch('/api/analytics/visits-per-hour');
+    async function load() {
+      setLoading(true);
+      setError(null);
 
-    if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
+      try {
+        console.log("Before calling...")
+        const res = await fetch('/api/analytics/visits-per-hour');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        console.log("Calling OK")
+        setRows(await res.json());
+      } catch (e) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    const rows = await response.json();
+    useEffect(() => { load(); }, []);
 
-    if (rows.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="2">No visits registered yet.</td></tr>';
-    } else {
-      tbody.innerHTML = rows
-        .map((row) => `<tr><td>${row.hour}</td><td>${row.visits}</td></tr>`)
-        .join('');
-    }
+    return h('main', null,
+      h('div', { className: 'top' },
+        h('h2', null, 'Visits per hour'),
+        h('button', { onClick: load, disabled: loading }, loading ? 'Loading...' : 'Refresh')
+      ),
 
-    statusElement.textContent = `Last updated at ${new Date().toLocaleTimeString()}`;
-  } catch (error) {
-    tbody.innerHTML = '<tr><td colspan="2">Could not load analytics.</td></tr>';
-    statusElement.textContent = error.message;
+      error && h('p', { className: 'error' }, error),
+
+      rows.length === 0 && !loading
+        ? h('p', { className: 'muted' }, 'No visits registered yet.')
+        : h('table', null,
+            h('thead', null,
+              h('tr', null,
+                h('th', null, 'Hour'),
+                h('th', null, 'Visits')
+              )
+            ),
+            h('tbody', null,
+              rows.map(row =>
+                h('tr', { key: row.hour },
+                  h('td', null, row.hour),
+                  h('td', null, row.visits)
+                )
+              )
+            )
+          )
+    );
   }
-}
 
-refreshButton.addEventListener('click', loadVisitsPerHour);
-loadVisitsPerHour();
+ReactDOM.createRoot(document.getElementById('root')).render(h(Dashboard));
