@@ -225,4 +225,6 @@ vendor/bin/phpunit
 ```
 
 [Unit Test](https://github.com/AFelipeTrujillo/tree-nation-assessment/tree/master/tests/Unit).  
-[Integration Test](https://github.com/AFelipeTrujillo/tree-nation-assessment/tree/master/tests/Integration).  
+[Integration Test](https://github.com/AFelipeTrujillo/tree-nation-assessment/tree/master/tests/Integration). 
+
+Thanks for readng :) 
