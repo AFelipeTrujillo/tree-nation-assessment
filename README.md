@@ -147,6 +147,8 @@ CREATE TABLE IF NOT EXISTS customer_stats (
 ## How to Run
 
 ### Run with docker
+* [docker-compose.yml](https://github.com/AFelipeTrujillo/tree-nation-assessment/blob/master/docker-compose.yml)
+* [Dockerfile](https://github.com/AFelipeTrujillo/tree-nation-assessment/blob/master/Dockerfile)
 
 ```bash
 docker-compose up
@@ -227,4 +229,4 @@ vendor/bin/phpunit
 [Unit Test](https://github.com/AFelipeTrujillo/tree-nation-assessment/tree/master/tests/Unit).  
 [Integration Test](https://github.com/AFelipeTrujillo/tree-nation-assessment/tree/master/tests/Integration). 
 
-Thanks for readng :) 
+Thanks for reading :) 
